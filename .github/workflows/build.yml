@@ -1,0 +1,54 @@
+name: NX_CI
+
+on:
+  push:
+    branches:
+      - develop
+  release:
+    types: [published]
+jobs:
+  build_NX:
+      runs-on: ubuntu-latest
+    
+      steps:
+        - name: Extract owner and repo
+          uses: jungwinter/split@v1
+          id: repo
+          with:
+            seperator: /
+            msg: ${{ github.repository }}
+        - name: Checkout
+          uses: actions/checkout@v3
+          with:
+            ref: develop
+            submodules: recursive
+        - name: Use Docker Build
+          uses: actions-hub/docker/cli@master
+          env:
+              SKIP_LOGIN: true
+              
+        - run: |
+               sed -i '1i git config --global --add safe.directory /home/runner/work/sys-clk-action/sys-clk-action' build.sh
+               cat build.sh
+               docker run -t --rm --name builder -v `pwd`:`pwd` -w `pwd` zerofo/ns_dev:0.9b2 bash build.sh
+
+        - name: Upload file
+          uses: actions/upload-artifact@v3
+          with:
+            name: ${{ steps.repo.outputs._1 }} 
+            path: dist/
+        - uses: actions/download-artifact@v2
+          with:
+            path: ${{ steps.repo.outputs._1 }}
+        - run: |
+               find ${{ steps.repo.outputs._1 }}
+               cd ${{ steps.repo.outputs._1 }}
+               zip -r ${{ steps.repo.outputs._1 }}.zip ${{ steps.repo.outputs._1 }}/ -x "*README.*"
+        - name: Upload zip to release
+          uses: svenstaro/upload-release-action@v2
+          with:
+            repo_token: ${{ secrets.release_token }}
+            file: ./${{ steps.repo.outputs._1 }}/*.zip
+            tag: ${{ github.ref }}
+            file_glob: true
+            overwrite: true
