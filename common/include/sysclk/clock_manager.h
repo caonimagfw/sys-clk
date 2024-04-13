@@ -23,6 +23,7 @@ typedef struct
     uint32_t overrideFreqs[SysClkModule_EnumMax];
     uint32_t temps[SysClkThermalSensor_EnumMax];
     int32_t power[SysClkPowerSensor_EnumMax];
+    uint32_t ramLoad[SysClkRamLoad_EnumMax];
 } SysClkContext;
 
 typedef struct
@@ -33,4 +34,4 @@ typedef struct
     };
 } SysClkTitleProfileList;
 
-#define SYSCLK_FREQ_LIST_MAX 32
+#define SYSCLK_FREQ_LIST_MAX 46

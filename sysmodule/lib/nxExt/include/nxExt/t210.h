@@ -17,14 +17,11 @@ extern "C"
 
 #include <switch.h>
 
-
-typedef struct {
-    Service s;
-} TsExtSession;
-
-Result tsExtOpenSession(TsExtSession *out, TsLocation dev);
-void tsExtCloseSession(TsExtSession *session);
-Result tsExtSessionGetTemperature(TsExtSession *session, float *temperature);
+u32 t210ClkCpuFreq(void);
+u32 t210ClkMemFreq(void);
+u32 t210ClkGpuFreq(void);
+u32 t210EmcLoadAll(void);
+u32 t210EmcLoadCpu(void);
 
 #ifdef __cplusplus
 }
