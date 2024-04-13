@@ -15,7 +15,7 @@
 #define HOSSVC_HAS_CLKRST (hosversionAtLeast(8,0,0))
 #define HOSSVC_HAS_TC (hosversionAtLeast(5,0,0))
 
-static SysClkSocType g_socType = SysClkSocType_Mariko;
+static SysClkSocType g_socType = SysClkSocType_Erista;
 
 const char* Board::GetModuleName(SysClkModule module, bool pretty)
 {
@@ -223,7 +223,7 @@ std::uint32_t Board::GetRealHz(SysClkModule module)
 void Board::GetFreqList(SysClkModule module, std::uint32_t* outList, std::uint32_t maxCount, std::uint32_t* outCount)
 {
     Result rc = 0;
-    PcvClockRatesListType type;
+    PcvExtClockRatesListType type;
     s32 tmpInMaxCount = maxCount;
     s32 tmpOutCount = 0;
 
@@ -234,18 +234,18 @@ void Board::GetFreqList(SysClkModule module, std::uint32_t* outList, std::uint32
         rc = clkrstOpenSession(&session, Board::GetPcvModuleId(module), 3);
         ASSERT_RESULT_OK(rc, "clkrstOpenSession");
 
-        rc = clkrstGetPossibleClockRates(&session, outList, tmpInMaxCount, &type, &tmpOutCount);
+        rc = clkrstExtGetPossibleClockRates(&session, outList, tmpInMaxCount, &type, &tmpOutCount);
         ASSERT_RESULT_OK(rc, "clkrstGetPossibleClockRates");
 
         clkrstCloseSession(&session);
     }
     else
     {
-        rc = pcvGetPossibleClockRates(Board::GetPcvModule(module), outList, tmpInMaxCount, &type, &tmpOutCount);
+        rc = pcvExtGetPossibleClockRates(Board::GetPcvModule(module), outList, tmpInMaxCount, &type, &tmpOutCount);
         ASSERT_RESULT_OK(rc, "pcvGetPossibleClockRates");
     }
 
-    if(type != PcvClockRatesListType_Discrete)
+    if(type != PcvExtClockRatesListType_Discrete)
     {
         ERROR_THROW("Unexpected PcvClockRatesListType: %u (module = %s)", type, Board::GetModuleName(module, false));
     }
@@ -299,17 +299,17 @@ std::int32_t Board::GetTsTemperatureMilli(TsLocation location)
 
     if(hosversionAtLeast(17,0,0))
     {
-        TsSession session = {0};
+        TsExtSession session = {0};
         float temp = 0;
 
-        rc = tsOpenSession(&session, ((u32)location + 1) | 0x41000000);
-        ASSERT_RESULT_OK(rc, "tsOpenSession(%u)", location);
+        rc = tsExtOpenSession(&session, location);
+        ASSERT_RESULT_OK(rc, "tsExtOpenSession(%u)", location);
 
-        rc = tsSessionGetTemperature(&session, &temp);
-        ASSERT_RESULT_OK(rc, "tsSessionGetTemperature(%u)", location);
+        rc = tsExtSessionGetTemperature(&session, &temp);
+        ASSERT_RESULT_OK(rc, "tsExtSessionGetTemperature(%u)", location);
         millis = temp * 1000;
 
-        tsSessionClose(&session);
+        tsExtCloseSession(&session);
     }
     else if(hosversionAtLeast(14,0,0))
     {
@@ -370,21 +370,6 @@ std::int32_t Board::GetPowerMw(SysClkPowerSensor sensor)
     return 0;
 }
 
-std::uint32_t Board::GetRamLoad(SysClkRamLoad loadSource)
-{
-    switch(loadSource)
-    {
-        case SysClkRamLoad_All:
-            return t210EmcLoadAll();
-        case SysClkRamLoad_Cpu:
-            return t210EmcLoadCpu();
-        default:
-            ASSERT_ENUM_VALID(SysClkRamLoad, loadSource);
-    }
-
-    return 0;
-}
-
 SysClkSocType Board::GetSocType() {
     return g_socType;
 }
@@ -404,8 +389,7 @@ void Board::FetchHardwareInfos()
     {
         case 2 ... 5:
             g_socType = SysClkSocType_Mariko;
-            break;
         default:
-            g_socType = SysClkSocType_Mariko;
+            g_socType = SysClkSocType_Erista;
     }
 }

@@ -58,15 +58,6 @@ Result sysclkIpcInitialize()
         g_server->AddFreq(SysClkModule_MEM, 1065600000);
         g_server->AddFreq(SysClkModule_MEM, 1331200000);
         g_server->AddFreq(SysClkModule_MEM, 1600000000);
-        g_server->AddFreq(SysClkModule_MEM, 1728000000);
-        g_server->AddFreq(SysClkModule_MEM, 1795000000);
-        g_server->AddFreq(SysClkModule_MEM, 1862000000);
-        g_server->AddFreq(SysClkModule_MEM, 1894000000);
-        g_server->AddFreq(SysClkModule_MEM, 1932000000);
-        g_server->AddFreq(SysClkModule_MEM, 1996000000);
-        g_server->AddFreq(SysClkModule_MEM, 2064000000);
-        g_server->AddFreq(SysClkModule_MEM, 2099000000);
-        g_server->AddFreq(SysClkModule_MEM, 2131000000);
 
         g_server->AddFreq(SysClkModule_CPU, 612000000);
         g_server->AddFreq(SysClkModule_CPU, 714000000);
@@ -93,11 +84,6 @@ Result sysclkIpcInitialize()
         g_server->AddFreq(SysClkModule_GPU, 768000000);
         g_server->AddFreq(SysClkModule_GPU, 844800000);
         g_server->AddFreq(SysClkModule_GPU, 921600000);
-        g_server->AddFreq(SysClkModule_GPU, 998400000);
-        g_server->AddFreq(SysClkModule_GPU, 1075200000);
-        g_server->AddFreq(SysClkModule_GPU, 1152000000);
-        g_server->AddFreq(SysClkModule_GPU, 1228800000);
-        g_server->AddFreq(SysClkModule_GPU, 1267200000);
     }
 
     return 0;
