@@ -385,11 +385,12 @@ void Board::FetchHardwareInfos()
 
     splExit();
 
+    // SysClkSocType_Erista
     switch(sku)
     {
         case 2 ... 5:
             g_socType = SysClkSocType_Mariko;
         default:
-            g_socType = SysClkSocType_Erista;
+            g_socType = SysClkSocType_Mariko;
     }
 }
