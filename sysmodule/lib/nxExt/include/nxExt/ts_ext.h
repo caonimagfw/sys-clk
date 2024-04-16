@@ -10,7 +10,22 @@
 
 #pragma once
 
-#include "nxExt/apm_ext.h"
-#include "nxExt/ts_ext.h"
-#include "nxExt/ipc_server.h"
-#include "nxExt/cpp/lockable_mutex.h"
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+#include <switch.h>
+
+
+typedef struct {
+    Service s;
+} TsExtSession;
+
+Result tsExtOpenSession(TsExtSession *out, TsLocation dev);
+void tsExtCloseSession(TsExtSession *session);
+Result tsExtSessionGetTemperature(TsExtSession *session, float *temperature);
+
+#ifdef __cplusplus
+}
+#endif
