@@ -11,13 +11,11 @@
 #include "freq_choice_gui.h"
 
 #include "../format.h"
-#include "fatal_gui.h"
 
-FreqChoiceGui::FreqChoiceGui(std::uint32_t selectedHz, std::uint32_t* hzList, std::uint32_t hzCount, FreqChoiceListener listener)
+FreqChoiceGui::FreqChoiceGui(std::uint32_t selectedHz, std::uint32_t* hzList, FreqChoiceListener listener)
 {
     this->selectedHz = selectedHz;
     this->hzList = hzList;
-    this->hzCount = hzCount;
     this->listener = listener;
 }
 
@@ -44,9 +42,11 @@ tsl::elm::ListItem* FreqChoiceGui::createFreqListItem(std::uint32_t hz, bool sel
 
 void FreqChoiceGui::listUI()
 {
+    std::uint32_t* hzPtr = this->hzList;
     this->listElement->addItem(this->createFreqListItem(0, this->selectedHz == 0));
-    for(std::uint32_t i = 0; i < this->hzCount; i++) {
-        std::uint32_t hz = this->hzList[i];
-        this->listElement->addItem(this->createFreqListItem(hz, (hz / 1000000) == (this->selectedHz / 1000000)));
+    while(*hzPtr)
+    {
+        this->listElement->addItem(this->createFreqListItem(*hzPtr, (*hzPtr / 1000000) == (this->selectedHz / 1000000)));
+        hzPtr++;
     }
 }

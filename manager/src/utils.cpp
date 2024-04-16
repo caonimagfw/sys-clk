@@ -22,25 +22,6 @@
 
 #include <borealis.hpp>
 
-#include "ipc/client.h"
-
-uint32_t g_freq_table_hz[SysClkModule_EnumMax][SYSCLK_FREQ_LIST_MAX+1];
-
-Result cacheFreqList()
-{
-    Result rc;
-    for(uint32_t i = 0; i < SysClkModule_EnumMax; i++)
-    {
-        rc = sysclkIpcGetFreqList((SysClkModule)i, &g_freq_table_hz[i][1], SYSCLK_FREQ_LIST_MAX, &g_freq_table_hz[i][0]);
-        if(R_FAILED(rc))
-        {
-            return rc;
-        }
-    }
-
-    return 0;
-}
-
 std::string formatFreq(uint32_t freq)
 {
     char str[16];
@@ -67,13 +48,6 @@ std::string formatTemp(uint32_t temp)
     return std::string(str);
 }
 
-std::string formatPower(int32_t power)
-{
-    char str[16];
-    snprintf(str, sizeof(str), "%d mW", power);
-    return std::string(str);
-}
-
 void errorResult(std::string tag, Result rc)
 {
 #ifdef __SWITCH__
@@ -84,8 +58,7 @@ void errorResult(std::string tag, Result rc)
 }
 
 // TODO: Merge ticker for single line labels in Borealis and remove usage of this
-std::string formatListItemTitle(const std::string str, size_t maxScore)
-{
+std::string formatListItemTitle(const std::string str, size_t maxScore) {
     size_t score = 0;
     for (size_t i = 0; i < str.length(); i++)
     {
@@ -99,39 +72,42 @@ std::string formatListItemTitle(const std::string str, size_t maxScore)
     return str;
 }
 
-brls::SelectListItem* createFreqListItem(SysClkModule module, uint32_t selectedFreqInMHz, std::string defaultString)
+brls::SelectListItem* createFreqListItem(SysClkModule module, uint32_t selectedFreqInMhz, std::string defaultString)
 {
     std::string name;
+    uint32_t* table;
 
     switch (module)
     {
         case SysClkModule_CPU:
             name = "CPU Frequency";
+            table = sysclk_g_freq_table_cpu_hz;
             break;
         case SysClkModule_GPU:
             name = "GPU Frequency";
+            table = sysclk_g_freq_table_gpu_hz;
             break;
         case SysClkModule_MEM:
             name = "MEM Frequency";
+            table = sysclk_g_freq_table_mem_hz;
             break;
         default:
             return nullptr;
     }
 
-    uint32_t* table = &g_freq_table_hz[module][0];
     size_t selected = 0;
-    size_t i        = 1;
+    size_t i        = 0;
 
     std::vector<std::string> clocks;
 
     clocks.push_back(defaultString);
 
-    while (i <= table[0])
+    while (table[i] != 0)
     {
         uint32_t freq = table[i];
 
-        if (freq / 1000000 == selectedFreqInMHz)
-            selected = i;
+        if (freq / 1000000 == selectedFreqInMhz)
+            selected = i + 1;
 
         char clock[16];
         snprintf(clock, sizeof(clock), "%d MHz", freq / 1000000);

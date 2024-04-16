@@ -49,7 +49,7 @@ CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++17
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:= $(foreach lib,$(LIBNAMES),-l$(lib)) -lnx
+LIBS	:= -lnx $(foreach lib,$(LIBNAMES),-l$(lib))
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing

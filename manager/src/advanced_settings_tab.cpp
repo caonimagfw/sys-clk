@@ -22,7 +22,7 @@
 
 #include "utils.h"
 
-#include <sysclk.h>
+#include <sysclk/clocks.h>
 
 AdvancedSettingsTab::AdvancedSettingsTab()
 {
@@ -51,7 +51,7 @@ AdvancedSettingsTab::AdvancedSettingsTab()
     cpuFreqListItem->getValueSelectedEvent()->subscribe([](int result){
         Result rc = result == 0 ?
             sysclkIpcRemoveOverride(SysClkModule_CPU) :
-            sysclkIpcSetOverride(SysClkModule_CPU, g_freq_table_hz[SysClkModule_CPU][result]);
+            sysclkIpcSetOverride(SysClkModule_CPU, sysclk_g_freq_table_cpu_hz[result - 1]);
 
         if (R_FAILED(rc))
         {
@@ -66,7 +66,7 @@ AdvancedSettingsTab::AdvancedSettingsTab()
     gpuFreqListItem->getValueSelectedEvent()->subscribe([](int result){
         Result rc = result == 0 ?
             sysclkIpcRemoveOverride(SysClkModule_GPU) :
-            sysclkIpcSetOverride(SysClkModule_GPU, g_freq_table_hz[SysClkModule_GPU][result]);
+            sysclkIpcSetOverride(SysClkModule_GPU, sysclk_g_freq_table_gpu_hz[result - 1]);
 
         if (R_FAILED(rc))
         {
@@ -82,7 +82,7 @@ AdvancedSettingsTab::AdvancedSettingsTab()
     {
         Result rc = result == 0 ?
             sysclkIpcRemoveOverride(SysClkModule_MEM) :
-            sysclkIpcSetOverride(SysClkModule_MEM, g_freq_table_hz[SysClkModule_MEM][result]);
+            sysclkIpcSetOverride(SysClkModule_MEM, sysclk_g_freq_table_mem_hz[result - 1]);
 
         if (R_FAILED(rc))
         {
@@ -113,7 +113,7 @@ AdvancedSettingsTab::AdvancedSettingsTab()
 
         std::string label       = std::string(sysclkFormatConfigValue(config, true));
         std::string description = this->getDescriptionForConfig(config);
-        uint64_t defaultValue   = this->configValues.values[config];
+        uint64_t defaultValue   = configValues.values[config];
 
         brls::IntegerInputListItem* configItem = new brls::IntegerInputListItem(label, defaultValue, label, description);
 
@@ -166,10 +166,6 @@ std::string AdvancedSettingsTab::getDescriptionForConfig(SysClkConfigValue confi
             return "How often to update /config/sys-clk/context.csv (in milliseconds)\n\uE016  Use 0 to disable";
         case SysClkConfigValue_TempLogIntervalMs:
             return "How often to log temperatures (in milliseconds)\n\uE016  Use 0 to disable";
-        case SysClkConfigValue_FreqLogIntervalMs:
-            return "How often to log real frequencies (in milliseconds)\n\uE016  Use 0 to disable";
-        case SysClkConfigValue_PowerLogIntervalMs:
-            return "How often to log power consumption (in milliseconds)\n\uE016  Use 0 to disable";
         case SysClkConfigValue_PollingIntervalMs:
             return "How fast to check and apply profiles (in milliseconds)";
         default:

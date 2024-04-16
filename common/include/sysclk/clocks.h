@@ -16,13 +16,6 @@
 
 typedef enum
 {
-    SysClkSocType_Erista = 0,
-    SysClkSocType_Mariko,
-    SysClkSocType_EnumMax
-} SysClkSocType;
-
-typedef enum
-{
     SysClkProfile_Handheld = 0,
     SysClkProfile_HandheldCharging,
     SysClkProfile_HandheldChargingUSB,
@@ -47,12 +40,30 @@ typedef enum
     SysClkThermalSensor_EnumMax
 } SysClkThermalSensor;
 
-typedef enum
+typedef struct
 {
-    SysClkPowerSensor_Now = 0,
-    SysClkPowerSensor_Avg,
-    SysClkPowerSensor_EnumMax
-} SysClkPowerSensor;
+    uint8_t enabled;
+    uint64_t applicationId;
+    SysClkProfile profile;
+    uint32_t freqs[SysClkModule_EnumMax];
+    uint32_t overrideFreqs[SysClkModule_EnumMax];
+    uint32_t temps[SysClkThermalSensor_EnumMax];
+} SysClkContext;
+
+typedef struct
+{
+    union {
+        uint32_t mhz[SysClkProfile_EnumMax * SysClkModule_EnumMax];
+        uint32_t mhzMap[SysClkProfile_EnumMax][SysClkModule_EnumMax];
+    };
+} SysClkTitleProfileList;
+
+#define SYSCLK_GPU_HANDHELD_MAX_HZ 460800000
+#define SYSCLK_GPU_UNOFFICIAL_CHARGER_MAX_HZ 768000000
+
+extern uint32_t sysclk_g_freq_table_mem_hz[];
+extern uint32_t sysclk_g_freq_table_cpu_hz[];
+extern uint32_t sysclk_g_freq_table_gpu_hz[];
 
 #define SYSCLK_ENUM_VALID(n, v) ((v) < n##_EnumMax)
 
@@ -81,19 +92,6 @@ static inline const char* sysclkFormatThermalSensor(SysClkThermalSensor thermSen
             return pretty ? "PCB" : "pcb";
         case SysClkThermalSensor_Skin:
             return pretty ? "Skin" : "skin";
-        default:
-            return NULL;
-    }
-}
-
-static inline const char* sysclkFormatPowerSensor(SysClkPowerSensor powSensor, bool pretty)
-{
-    switch(powSensor)
-    {
-        case SysClkPowerSensor_Now:
-            return pretty ? "Now" : "now";
-        case SysClkPowerSensor_Avg:
-            return pretty ? "Avg" : "avg";
         default:
             return NULL;
     }
