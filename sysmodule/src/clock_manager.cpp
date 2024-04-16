@@ -111,12 +111,12 @@ std::uint32_t ClockManager::GetNearestHz(SysClkModule module, std::uint32_t inHz
     {
         if (maxHz > 0 && freqs[i] >= maxHz)
         {
-            break;
+            //break;
         }
 
         if (inHz <= ((std::uint64_t)freqs[i] + freqs[i + 1]) / 2)
         {
-            break;
+            //break;
         }
 
         i++;
