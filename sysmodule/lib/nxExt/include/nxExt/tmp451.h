@@ -11,15 +11,16 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-#include "sysclk/ipc.h"
-#include "sysclk/board.h"
-#include "sysclk/clock_manager.h"
-#include "sysclk/apm.h"
-#include "sysclk/config.h"
-#include "sysclk/errors.h"
+#include <switch.h>
+
+Result tmp451Initialize(void);
+void tmp451Exit(void);
+s32 tmp451TempPcb(void);
+s32 tmp451TempSoc(void);
 
 #ifdef __cplusplus
 }

@@ -11,15 +11,13 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-#include "sysclk/ipc.h"
-#include "sysclk/board.h"
-#include "sysclk/clock_manager.h"
-#include "sysclk/apm.h"
-#include "sysclk/config.h"
-#include "sysclk/errors.h"
+#include <switch.h>
+
+Result i2csessionExtRegReceive(I2cSession* s, u8 in, void* out, u8 out_size);
 
 #ifdef __cplusplus
 }
