@@ -3,7 +3,7 @@ name: NX_CI
 on:
   push:
     branches:
-      - develop
+      - master
   release:
     types: [published]
 jobs:
@@ -20,7 +20,7 @@ jobs:
         - name: Checkout
           uses: actions/checkout@v3
           with:
-            ref: develop
+            ref: master
             submodules: recursive
         - name: Use Docker Build
           uses: actions-hub/docker/cli@master
