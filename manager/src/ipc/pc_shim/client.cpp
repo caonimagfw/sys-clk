@@ -45,8 +45,8 @@ Result sysclkIpcInitialize()
         g_server->SetContextEnabled(true);
 
         g_server->SetProfile(0x010000000000F002, SysClkModule_CPU, SysClkProfile_Docked, 1224);
-        g_server->SetProfile(0x010000000000F002, SysClkModule_GPU, SysClkProfile_Docked, 1267);
-        g_server->SetProfile(0x010000000000F002, SysClkModule_MEM, SysClkProfile_Docked, 2131);
+        g_server->SetProfile(0x010000000000F002, SysClkModule_GPU, SysClkProfile_Docked, 921);
+        g_server->SetProfile(0x010000000000F002, SysClkModule_MEM, SysClkProfile_Docked, 1600);
 
         g_server->SetProfile(0x010000000000F002, SysClkModule_CPU, SysClkProfile_Handheld, 1224);
         g_server->SetProfile(0x010000000000F002, SysClkModule_MEM, SysClkProfile_Handheld, 1600);
