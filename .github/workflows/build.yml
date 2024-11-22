@@ -16,8 +16,6 @@ jobs:
       image: git.libretro.com:5050/libretro-infrastructure/libretro-build-libnx-devkitpro:latest
 
     steps:
-    - uses: actions/checkout@v3
-
     - name: Mount sys-clk
       uses: actions/checkout@v3
       with:
