@@ -19,7 +19,7 @@ jobs:
 
     - name: check i2c
       run: |
-          sudo apt-get install -y i2c-tools
+          sudo apt-get install -y i2c-tools && sudo apt-get install -y libi2c-dev
 
     - name: package
       run: ./build.sh
