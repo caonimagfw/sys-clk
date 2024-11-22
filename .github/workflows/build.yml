@@ -12,7 +12,8 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: devkitpro/devkita64
+    container: 
+      image:libretro-build-libnx-devkitpro:latest
 
     steps:
     - uses: actions/checkout@v3
