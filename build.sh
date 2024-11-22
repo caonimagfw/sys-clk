@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-apt-get install -y i2c-tools
 
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DIST_DIR="$ROOT_DIR/dist"

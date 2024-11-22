@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container: 
-      image:libretro-build-libnx-devkitpro:latest
+      image: git.libretro.com:5050/libretro-infrastructure/libretro-build-libnx-devkitpro:latest
 
     steps:
     - uses: actions/checkout@v3
