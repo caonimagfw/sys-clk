@@ -18,8 +18,14 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Mount sys-clk
+      uses: actions/checkout@v3
+      with:
+        path: sys-clk
+
     - name: package
-      run: ./build.sh sys-clk
+      working-directory: ./sys-clk
+      run: ./build.sh
 
     - uses: actions/upload-artifact@v3
       with:
