@@ -12,6 +12,8 @@
 #include "clocks.h"
 #include "errors.h"
 
+#define HOSSVC_HAS_TC (hosversionAtLeast(5,0,0))
+
 void Clocks::GetList(SysClkModule module, std::uint32_t **outClocks)
 {
     switch(module)
@@ -52,14 +54,14 @@ void Clocks::Initialize()
     rc = psmInitialize();
     ASSERT_RESULT_OK(rc, "psmInitialize");
 
-    rc = tsInitialize();
-    ASSERT_RESULT_OK(rc, "tsInitialize");
-
-    if(hosversionAtLeast(5,0,0))
+    if(HOSSVC_HAS_TC)
     {
         rc = tcInitialize();
         ASSERT_RESULT_OK(rc, "tcInitialize");
     }
+
+    rc = tmp451Initialize();
+    ASSERT_RESULT_OK(rc, "tmp451Initialize");
 }
 
 void Clocks::Exit()
@@ -75,12 +77,13 @@ void Clocks::Exit()
 
     apmExtExit();
     psmExit();
-    tsExit();
 
-    if(hosversionAtLeast(5,0,0))
+    if(HOSSVC_HAS_TC)
     {
         tcExit();
     }
+
+    tmp451Exit();
 }
 
 const char* Clocks::GetModuleName(SysClkModule module, bool pretty)
@@ -314,58 +317,21 @@ std::uint32_t Clocks::GetNearestHz(SysClkModule module, std::uint32_t inHz)
     return clockTable[i];
 }
 
-std::int32_t Clocks::GetTsTemperatureMilli(TsLocation location) {
-    Result rc;
-    std::int32_t millis = 0;
-
-    if(hosversionAtLeast(19,0,0))
-    {
-        // TODO: see https://github.com/retronx-team/sys-clk/issues/85
-    }
-    else if(hosversionAtLeast(17,0,0))
-    {
-        TsExtSession session = {0};
-        float temp = 0;
-
-        rc = tsExtOpenSession(&session, location);
-        ASSERT_RESULT_OK(rc, "tsExtOpenSession(%u)", location);
-
-        rc = tsExtSessionGetTemperature(&session, &temp);
-        ASSERT_RESULT_OK(rc, "tsExtSessionGetTemperature(%u)", location);
-        millis = temp * 1000;
-
-        tsExtCloseSession(&session);
-    }
-    else if(hosversionAtLeast(14,0,0))
-    {
-        rc = tsGetTemperature(location, &millis);
-        ASSERT_RESULT_OK(rc, "tsGetTemperature(%u)", location);
-        millis *= 1000;
-    }
-    else
-    {
-        rc = tsGetTemperatureMilliC(location, &millis);
-        ASSERT_RESULT_OK(rc, "tsGetTemperatureMilliC(%u)", location);
-    }
-
-    return millis;
-}
-
 std::uint32_t Clocks::GetTemperatureMilli(SysClkThermalSensor sensor)
 {
     std::int32_t millis = 0;
 
     if(sensor == SysClkThermalSensor_SOC)
     {
-        millis = GetTsTemperatureMilli(TsLocation_External);
+        millis = tmp451TempSoc();
     }
     else if(sensor == SysClkThermalSensor_PCB)
     {
-        millis = GetTsTemperatureMilli(TsLocation_Internal);
+        millis = tmp451TempPcb();
     }
     else if(sensor == SysClkThermalSensor_Skin)
     {
-        if(hosversionAtLeast(5,0,0))
+        if(HOSSVC_HAS_TC)
         {
             Result rc;
             rc = tcGetSkinTemperatureMilliC(&millis);
