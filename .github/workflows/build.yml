@@ -18,8 +18,9 @@ jobs:
     - name: check out libnx
       uses: actions/checkout@v2
       with:
-        repository: switchbrew/libnx.git
-    
+        repository: switchbrew/libnx
+        ref: master
+
     - name: build libnx 
       run: |
         cd libnx
