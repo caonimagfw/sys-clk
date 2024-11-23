@@ -15,16 +15,9 @@ jobs:
     container: devkitpro/devkita64
 
     steps:
-    - name: check out libnx
-      uses: actions/checkout@v2
-      with:
-        repository: switchbrew/libnx
-        ref: master
-
-    - name: build libnx 
+    - name: libnx
       run: |
-        make -C nx -j2
-        make install
+        sudo apt-get install -y libnx libi2c-dev
 
     - uses: actions/checkout@v3
 
