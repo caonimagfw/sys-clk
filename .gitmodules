@@ -1,3 +1,6 @@
 [submodule "sysmodule/lib/nx"]
 	path = sysmodule/lib/nx
 	url = https://github.com/switchbrew/libnx.git
+[submodule "sysmodule/lib/libnx"]
+	path = sysmodule/lib/libnx
+	url = https://github.com/switchbrew/libnx.git
