@@ -23,7 +23,6 @@ jobs:
 
     - name: build libnx 
       run: |
-        cd libnx
         make -C nx -j2
         make install
 
