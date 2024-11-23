@@ -21,7 +21,7 @@ jobs:
       run: |
         dkp-pacman -Syu --noconfirm
         dkp-pacman -S libnx --noconfirm
-        dkp-pacman -Sy devkit-env devkitA64 libnx switch-tools switch-mesa switch-zlib switch-bzip2 switch-liblzma switch-freetype switch-libpng switch-libvpx switch-ffmpeg libi2c-dev i2c-tools --noconfirm
+        dkp-pacman -Sy devkit-env devkitA64 libnx switch-tools switch-mesa switch-zlib switch-bzip2 switch-liblzma switch-freetype switch-libpng switch-libvpx switch-ffmpeg --noconfirm
 
     - name: package
       run: ./build.sh
