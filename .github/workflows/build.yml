@@ -21,7 +21,7 @@ jobs:
       run: |
         dkp-pacman -Syu --noconfirm
         dkp-pacman -S libnx --noconfirm
-        apt-get install -y build-essential cmake git libarchive-dev libasound2-dev libavcodec-dev libavformat-dev libavutil-dev libbz2-dev libcurl4-openssl-dev libfreetype6-dev libjpeg-dev libmad0-dev libmp3lame-dev libogg-dev libpng-dev libpulse-dev libsdl2-dev libspeexdsp-dev libsqlite3-dev libtheora-dev libvorbis-dev libx264-dev libx265-dev libxvidcore-dev libi2c-dev i2c-tools 
+        dkp-pacman -Sy devkit-env devkitA64 libnx switch-tools switch-mesa switch-zlib switch-bzip2 switch-liblzma switch-freetype switch-libpng switch-libvpx switch-ffmpeg libi2c-dev i2c-tools --noconfirm
 
     - name: package
       run: ./build.sh
