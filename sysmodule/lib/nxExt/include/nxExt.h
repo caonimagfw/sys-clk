@@ -10,8 +10,6 @@
 
 #pragma once
 
-#include <switch.h>
-
 #include "nxExt/apm_ext.h"
 #include "nxExt/i2c.h"
 #include "nxExt/ts_ext.h"
