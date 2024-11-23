@@ -12,7 +12,7 @@
 
 #include "nxExt/apm_ext.h"
 #include "nxExt/i2c.h"
-#include "libnx/nx/include/switch/services/i2c.h
+#include "libnx/nx/include/switch/services/i2c.h"
 #include "nxExt/ts_ext.h"
 #include "nxExt/max17050.h"
 #include "nxExt/tmp451.h"
