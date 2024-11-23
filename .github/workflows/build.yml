@@ -21,7 +21,7 @@ jobs:
       run: |
         dkp-pacman -Syu --noconfirm
         dkp-pacman -S libnx --noconfirm
-        apt-get install -y libi2c-dev
+        dkp-pacman -S libretro --noconfirm
 
     - name: package
       run: ./build.sh
