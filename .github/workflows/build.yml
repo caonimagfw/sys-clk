@@ -12,16 +12,12 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: devkitpro/devkita64
+    container: 
+        image: git.libretro.com:5050/libretro-infrastructure/libretro-build-libnx-devkitpro:latest
+        options: --user root
 
     steps:
     - uses: actions/checkout@v3
-
-    - name: Install libnx
-      run: |
-        dkp-pacman -Syu --noconfirm
-        dkp-pacman -S libnx --noconfirm
-        dkp-pacman -Sy devkit-env devkitA64 libnx switch-tools switch-mesa switch-zlib switch-bzip2 switch-liblzma switch-freetype switch-libpng switch-libvpx switch-ffmpeg --noconfirm
 
     - name: package
       run: ./build.sh
