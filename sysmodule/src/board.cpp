@@ -15,7 +15,7 @@
 #define HOSSVC_HAS_CLKRST (hosversionAtLeast(8,0,0))
 #define HOSSVC_HAS_TC (hosversionAtLeast(5,0,0))
 
-static SysClkSocType g_socType = SysClkSocType_Mariko;
+static SysClkSocType g_socType = SysClkSocType_Erista;
 
 const char* Board::GetModuleName(SysClkModule module, bool pretty)
 {
@@ -372,6 +372,6 @@ void Board::FetchHardwareInfos()
             g_socType = SysClkSocType_Mariko;
             break;
         default:
-            g_socType = SysClkSocType_Mariko;
+            g_socType = SysClkSocType_Erista;
     }
 }

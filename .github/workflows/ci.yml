@@ -1,4 +1,4 @@
-name: NX_CI
+name: libnx_build
 
 on:
   push:

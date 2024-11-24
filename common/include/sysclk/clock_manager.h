@@ -34,4 +34,4 @@ typedef struct
     };
 } SysClkTitleProfileList;
 
-#define SYSCLK_FREQ_LIST_MAX 46
+#define SYSCLK_FREQ_LIST_MAX 32
