@@ -229,15 +229,20 @@ void Board::GetFreqList(SysClkModule module, std::uint32_t* outList, std::uint32
 
     if(HOSSVC_HAS_CLKRST)
     {
-        ClkrstSession session = {0};
-
-        rc = clkrstOpenSession(&session, Board::GetPcvModuleId(module), 3);
-        ASSERT_RESULT_OK(rc, "clkrstOpenSession");
-
-        rc = clkrstGetPossibleClockRates(&session, outList, tmpInMaxCount, &type, &tmpOutCount);
-        ASSERT_RESULT_OK(rc, "clkrstGetPossibleClockRates");
-
-        clkrstCloseSession(&session);
+        switch(module)
+        {
+            case SysClkModule_CPU:
+                *outClocks = sysclk_g_freq_table_cpu_hz;
+                *outCount = sysclk_g_freq_table_cpu_hz.count;
+            case SysClkModule_GPU:
+                *outClocks = sysclk_g_freq_table_gpu_hz;
+                *outCount = sysclk_g_freq_table_gpu_hz.count;
+            case SysClkModule_MEM:
+                *outClocks = sysclk_g_freq_table_mem_hz;
+                *outCount = sysclk_g_freq_table_mem_hz.count;
+            default:
+                ASSERT_ENUM_VALID(SysClkModule, module);
+        }
     }
     else
     {
@@ -250,7 +255,7 @@ void Board::GetFreqList(SysClkModule module, std::uint32_t* outList, std::uint32
         ERROR_THROW("Unexpected PcvClockRatesListType: %u (module = %s)", type, Board::GetModuleName(module, false));
     }
 
-    *outCount = tmpOutCount;
+    //*outCount = tmpOutCount;
 }
 
 void Board::ResetToStock()
