@@ -232,14 +232,14 @@ void Board::GetFreqList(SysClkModule module, std::uint32_t* outList, std::uint32
         switch(module)
         {
             case SysClkModule_CPU:
-                *outClocks = sysclk_g_freq_table_cpu_hz;
-                *outCount = sysclk_g_freq_table_cpu_hz.count;
+                *outList = sysclk_g_freq_table_cpu_hz;
+                *outCount = sysclk_g_freq_table_cpu_hz.length;
             case SysClkModule_GPU:
-                *outClocks = sysclk_g_freq_table_gpu_hz;
-                *outCount = sysclk_g_freq_table_gpu_hz.count;
+                *outList = sysclk_g_freq_table_gpu_hz;
+                *outCount = sysclk_g_freq_table_gpu_hz.length;
             case SysClkModule_MEM:
-                *outClocks = sysclk_g_freq_table_mem_hz;
-                *outCount = sysclk_g_freq_table_mem_hz.count;
+                *outList = sysclk_g_freq_table_mem_hz;
+                *outCount = sysclk_g_freq_table_mem_hz.length;
             default:
                 ASSERT_ENUM_VALID(SysClkModule, module);
         }
