@@ -61,9 +61,9 @@ typedef enum
     SysClkRamLoad_EnumMax
 } SysClkRamLoad;
 
-extern uint32_t *sysclk_g_freq_table_mem_hz[14];
-extern uint32_t *sysclk_g_freq_table_cpu_hz[12];
-extern uint32_t *sysclk_g_freq_table_gpu_hz[17];
+extern uint32_t sysclk_g_freq_table_mem_hz[14];
+extern uint32_t sysclk_g_freq_table_cpu_hz[12];
+extern uint32_t sysclk_g_freq_table_gpu_hz[17];
 
 #define SYSCLK_ENUM_VALID(n, v) ((v) < n##_EnumMax)
 
