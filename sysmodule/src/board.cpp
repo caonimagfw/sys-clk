@@ -234,12 +234,15 @@ void Board::GetFreqList(SysClkModule module, std::uint32_t* outList, std::uint32
             case SysClkModule_CPU:
                 outList = sysclk_g_freq_table_cpu_hz;
                 *outCount = 12;
+                break;
             case SysClkModule_GPU:
                 outList = sysclk_g_freq_table_gpu_hz;
                 *outCount = 17;
+                break;
             case SysClkModule_MEM:
                 outList = sysclk_g_freq_table_mem_hz;
                 *outCount = 14;
+                break;
             default:
                 ASSERT_ENUM_VALID(SysClkModule, module);
         }
