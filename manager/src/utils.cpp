@@ -102,39 +102,36 @@ std::string formatListItemTitle(const std::string str, size_t maxScore)
 brls::SelectListItem* createFreqListItem(SysClkModule module, uint32_t selectedFreqInMHz, std::string defaultString)
 {
     std::string name;
-    uint32_t* table;
-
+ 
     switch (module)
     {
         case SysClkModule_CPU:
             name = "CPU Frequency";
-            table = sysclk_g_freq_table_cpu_hz;
             break;
         case SysClkModule_GPU:
             name = "GPU Frequency";
-            table = sysclk_g_freq_table_gpu_hz;
             break;
         case SysClkModule_MEM:
             name = "MEM Frequency";
-            table = sysclk_g_freq_table_mem_hz;
             break;
         default:
             return nullptr;
     }
 
+    uint32_t* table = &g_freq_table_hz[module][0];
     size_t selected = 0;
-    size_t i        = 0;
+    size_t i        = 1;
 
     std::vector<std::string> clocks;
 
     clocks.push_back(defaultString);
 
-    while (table[i] != 0)
+    while (i <= table[0])
     {
         uint32_t freq = table[i];
 
         if (freq / 1000000 == selectedFreqInMHz)
-            selected = i + 1;
+            selected = i;
 
         char clock[16];
         snprintf(clock, sizeof(clock), "%d MHz", freq / 1000000);

@@ -24,8 +24,7 @@ uint32_t sysclk_g_freq_table_mem_hz[] = {
     1996000000,
     2064000000,
     2099000000,
-    2131000000,
-    0
+    2131000000
 };
 
 uint32_t sysclk_g_freq_table_cpu_hz[] = {
@@ -40,8 +39,7 @@ uint32_t sysclk_g_freq_table_cpu_hz[] = {
     1428000000,
     1581000000,
     1683000000,
-    1785000000,
-    0
+    1785000000
 };
 
 uint32_t sysclk_g_freq_table_gpu_hz[] = {
@@ -61,6 +59,5 @@ uint32_t sysclk_g_freq_table_gpu_hz[] = {
     1075200000,
     1152000000,
     1228800000,
-    1267200000,
-    0
+    1267200000
 };
