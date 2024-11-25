@@ -102,7 +102,7 @@ std::string formatListItemTitle(const std::string str, size_t maxScore)
 brls::SelectListItem* createFreqListItem(SysClkModule module, uint32_t selectedFreqInMHz, std::string defaultString)
 {
     std::string name;
- 
+
     switch (module)
     {
         case SysClkModule_CPU:

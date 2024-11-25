@@ -257,8 +257,6 @@ void Board::GetFreqList(SysClkModule module, std::uint32_t* outList, std::uint32
     {
         ERROR_THROW("Unexpected PcvClockRatesListType: %u (module = %s)", type, Board::GetModuleName(module, false));
     }
-
-    //*outCount = tmpOutCount;
 }
 
 void Board::ResetToStock()
