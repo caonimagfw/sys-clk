@@ -82,7 +82,7 @@ AdvancedSettingsTab::AdvancedSettingsTab()
     {
         Result rc = result == 0 ?
             sysclkIpcRemoveOverride(SysClkModule_MEM) :
-            sysclkIpcSetOverride(SysClkModule_MEM, sysclk_g_freq_table_mem_hz[result];
+            sysclkIpcSetOverride(SysClkModule_MEM, sysclk_g_freq_table_mem_hz[result]);
 
         if (R_FAILED(rc))
         {
