@@ -24,8 +24,9 @@ AppProfileGui::~AppProfileGui()
     delete this->profileList;
 }
 
-void AppProfileGui::openFreqChoiceGui(tsl::elm::ListItem* listItem, SysClkProfile profile, SysClkModule module, std::uint32_t* hzList)
+void AppProfileGui::openFreqChoiceGui(tsl::elm::ListItem* listItem, SysClkProfile profile, SysClkModule module)
 {
+    std::uint32_t hzList[SYSCLK_FREQ_LIST_MAX];
     std::uint32_t hzCount;
     Result rc = sysclkIpcGetFreqList(module, &hzList[0], SYSCLK_FREQ_LIST_MAX, &hzCount);
     if(R_FAILED(rc))
@@ -48,14 +49,14 @@ void AppProfileGui::openFreqChoiceGui(tsl::elm::ListItem* listItem, SysClkProfil
     });
 }
 
-void AppProfileGui::addModuleListItem(SysClkProfile profile, SysClkModule module, std::uint32_t* hzList)
+void AppProfileGui::addModuleListItem(SysClkProfile profile, SysClkModule module)
 {
     tsl::elm::ListItem* listItem = new tsl::elm::ListItem(sysclkFormatModule(module, true));
     listItem->setValue(formatListFreqMHz(this->profileList->mhzMap[profile][module]));
-    listItem->setClickListener([this, listItem, profile, module, hzList](u64 keys) {
+    listItem->setClickListener([this, listItem, profile, module](u64 keys) {
         if((keys & HidNpadButton_A) == HidNpadButton_A)
         {
-            this->openFreqChoiceGui(listItem, profile, module, hzList);
+            this->openFreqChoiceGui(listItem, profile, module);
             return true;
         }
 
@@ -68,9 +69,9 @@ void AppProfileGui::addModuleListItem(SysClkProfile profile, SysClkModule module
 void AppProfileGui::addProfileUI(SysClkProfile profile)
 {
     this->listElement->addItem(new tsl::elm::CategoryHeader(sysclkFormatProfile(profile, true)));
-    this->addModuleListItem(profile, SysClkModule_CPU, &sysclk_g_freq_table_cpu_hz[0]);
-    this->addModuleListItem(profile, SysClkModule_GPU, &sysclk_g_freq_table_gpu_hz[0]);
-    this->addModuleListItem(profile, SysClkModule_MEM, &sysclk_g_freq_table_mem_hz[0]);
+    this->addModuleListItem(profile, SysClkModule_CPU);
+    this->addModuleListItem(profile, SysClkModule_GPU);
+    this->addModuleListItem(profile, SysClkModule_MEM);
 }
 
 void AppProfileGui::listUI()
