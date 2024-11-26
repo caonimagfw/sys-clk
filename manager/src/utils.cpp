@@ -103,26 +103,28 @@ brls::SelectListItem* createFreqListItem(SysClkModule module, uint32_t selectedF
 {
     std::string name;
     size_t freqCount = 0;
-
+    uint32_t* table;
     switch (module)
     {
         case SysClkModule_CPU:
             name = "CPU Frequency";
             freqCount = 12;
+            table = sysclk_g_freq_table_cpu_hz;
             break;
         case SysClkModule_GPU:
             name = "GPU Frequency";
             freqCount = 17;
+            table = sysclk_g_freq_table_gpu_hz;
             break;
         case SysClkModule_MEM:
             name = "MEM Frequency";
             freqCount = 14;
+            table = sysclk_g_freq_table_mem_hz;
             break;
         default:
             return nullptr;
     }
 
-    uint32_t* table = &g_freq_table_hz[module][0];
     size_t selected = 0;
     size_t i        = 0;
 
@@ -132,7 +134,7 @@ brls::SelectListItem* createFreqListItem(SysClkModule module, uint32_t selectedF
 
     while (i < freqCount)
     {
-        uint32_t freq = table[i + 1];
+        uint32_t freq = table[i];
 
         if (freq / 1000000 == selectedFreqInMHz)
             selected = i + 1;
