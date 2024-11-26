@@ -186,20 +186,10 @@ void ClockManager::Tick()
 
             if (targetHz)
             {
-                maxHz = this->GetMaxAllowedHz((SysClkModule)module, this->context->profile);
-                nearestHz = this->GetNearestHz((SysClkModule)module, targetHz, maxHz);
-
-                if (nearestHz != this->context->freqs[module] && this->context->enabled)
+                if (this->context->enabled)
                 {
-                    FileUtils::LogLine(
-                        "[mgr] %s clock set : %u.%u MHz (target = %u.%u MHz)",
-                        Board::GetModuleName((SysClkModule)module, true),
-                        nearestHz/1000000, nearestHz/100000 - nearestHz/1000000*10,
-                        targetHz/1000000, targetHz/100000 - targetHz/1000000*10
-                    );
-
-                    Board::SetHz((SysClkModule)module, nearestHz);
-                    this->context->freqs[module] = nearestHz;
+                    Board::SetHz((SysClkModule)module, targetHz);
+                    this->context->freqs[module] = targetHz;
                 }
             }
         }

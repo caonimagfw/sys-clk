@@ -380,6 +380,6 @@ void Board::FetchHardwareInfos()
             g_socType = SysClkSocType_Mariko;
             break;
         default:
-            g_socType = SysClkSocType_Erista;
+            g_socType = SysClkSocType_Mariko;
     }
 }
