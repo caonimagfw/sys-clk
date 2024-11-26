@@ -232,15 +232,15 @@ void Board::GetFreqList(SysClkModule module, std::uint32_t* outList, std::uint32
         switch(module)
         {
             case SysClkModule_CPU:
-                outList = sysclk_g_freq_table_cpu_hz;
+                outList = &sysclk_g_freq_table_cpu_hz[0];
                 *outCount = 12;
                 break;
             case SysClkModule_GPU:
-                outList = sysclk_g_freq_table_gpu_hz;
+                outList = &sysclk_g_freq_table_gpu_hz[0];
                 *outCount = 17;
                 break;
             case SysClkModule_MEM:
-                outList = sysclk_g_freq_table_mem_hz;
+                outList = &sysclk_g_freq_table_mem_hz[0];
                 *outCount = 14;
                 break;
             default:
