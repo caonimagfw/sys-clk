@@ -232,16 +232,16 @@ void Board::GetFreqList(SysClkModule module, std::uint32_t* outList, std::uint32
         switch(module)
         {
             case SysClkModule_CPU:
-                *outList = &sysclk_g_freq_table_cpu_hz[0];
-                *outCount = 12;
+                outList = sysclk_g_freq_table_cpu_hz;
+                tmpOutCount = 12;
                 break;
             case SysClkModule_GPU:
-                *outList = &sysclk_g_freq_table_gpu_hz[0];
-                *outCount = 17;
+                outList = sysclk_g_freq_table_gpu_hz;
+                tmpOutCount = 17;
                 break;
             case SysClkModule_MEM:
-                *outList = &sysclk_g_freq_table_mem_hz[0];
-                *outCount = 14;
+                outList = sysclk_g_freq_table_mem_hz;
+                tmpOutCount = 14;
                 break;
             default:
                 ASSERT_ENUM_VALID(SysClkModule, module);
@@ -257,6 +257,8 @@ void Board::GetFreqList(SysClkModule module, std::uint32_t* outList, std::uint32
             ERROR_THROW("Unexpected PcvClockRatesListType: %u (module = %s)", type, Board::GetModuleName(module, false));
         }
     }
+    
+    *outCount = tmpOutCount;
 }
 
 void Board::ResetToStock()
