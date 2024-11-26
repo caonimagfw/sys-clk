@@ -118,7 +118,7 @@ brls::SelectListItem* createFreqListItem(SysClkModule module, uint32_t selectedF
             return nullptr;
     }
 
-    uint32_t* table = &g_freq_table_hz[module][0];
+    uint32_t* table = g_freq_table_hz[module];
     size_t selected = 0;
     size_t i        = 1;
 
